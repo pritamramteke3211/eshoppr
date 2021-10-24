@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Change Shiping Address{% endblock title %}
+{% load static %}
+
+
+{% block body %} 
+
+    {% for i in adrresses %}
+        
+            <div class="col-md-8 offset-2">
+                <span>{{i.address}}</span><br>
+                <span>Mob_No: {{i.phone_number}}</span><br>
+                <span>City: {{i.city}}</span><br>
+                <span>State: {{i.state}}</span><br>
+                <span>Zip: {{i.zip}}</span><br><br>
+                <span>
+                    <!-- Button trigger modal -->
+                    <a href="#" type="button" class="btn btn-primary">
+                    Change Shipping Address
+                    </a>
+                </span>
+            
+            </div>
+        </div>
+        <hr>
+    {% endfor %}
+
+    
+
+{% endblock body %}
+

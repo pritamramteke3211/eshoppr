@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}OrderPlaced{% endblock title %}
+{% load static %}
+{% load mathfilters %}
+
+{% block body %} 
+
+
+<div class='container mt-5 mb-5'>
+    <div class="row">
+        <div class="col-md-3 col-sm-3 col-xs-3 px-2 text-center" id='profile_menu'>
+            <a href="{% url 'dashboard' %}" >Profile</a><br>
+            <a href="{% url 'address' %}" >Address</a><br>
+            <a href="{% url 'orders' %}" class='btn btn-primary'>Orders</a>
+        </div>
+        <div class="col-md-8 col-sm-8 col-xs-8 px-5 text-center">
+            {% if orders %}
+            <h2>Your Orders</h2>
+            
+
+            {% for order in orders %}
+            <hr>
+
+                <span>Id: <i>{{order.id}}</i></span><br>
+                <span>Total_Items: {{order.product_count}}</span><br>
+                <span>Total_Amounts: <b>{{order.total_amount}}</b></span><br>
+                <span>Order_Date: {{order.order_date}}</span><br>
+                <span>Order_Staus: <i><b>{{order.status}}</b></i></span><br>
+                {% comment %} <span><a href="#" class='btn btn-info'>See Details</a></span> {% endcomment %}
+                <br>
+                <span><a href="{% url 'cancel_order' order.id %}" class='btn btn-danger'>Cancel Order</a></span><br>
+
+          
+            
+            <br>
+            {% endfor %}
+
+            {% else %}
+                <div class="alert alert-info">
+                    No Orders Yet
+                </div>
+                
+            {% endif %}
+            <hr>
+            <div class='mt-2'>
+                <a href="{% url 'home' %}" class='btn btn-primary'>Back To Home</a>
+                <a href="{% url 'dashboard' %}" class='btn btn-secondary'>Back To Profile</a><br>
+            </div>
+
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+
+</div>
+
+{% endblock body %}
+

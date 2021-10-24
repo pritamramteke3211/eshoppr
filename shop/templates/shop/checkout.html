@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% block title %}CheckOut{% endblock title %}
+{% load static %}
+{% load mathfilters %}
+
+{% block body %} 
+
+
+
+<div class="container mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-6 col-xs-6 col-sm-6 px-2">
+            <h2>Ordered Summary</h2>
+            <hr>
+            {% if cart %}
+            {% for i in cart %}
+                <div>
+                    <span>{{i.product_name}}</span>
+                    <span class='badge bg-primary'>{{i.quantity}}</span>
+                    <span style='float:right;'> ₹ {{i.product_name.price|mul:i.quantity}}</span>
+                </div>
+            {% endfor %}
+            <hr>
+            <div>
+                <span style="font-weight:bold;">Total_Amount </span> 
+                <span style='float:right'>
+                {{tot_price}} + 70(Delivery Charge) = 
+                <span  style="font-weight:bold;float:right;"> ₹ {{tot_price|add:70}}</span></span> 
+                
+            </div>
+            {% else %}
+            <div class="alert alert-warning">
+                Empty Cart
+            </div>
+            {% endif %}
+
+        </div>
+        <div class="col-md-5 col-xs-5 col-sm-5 px-2 offset-1">
+            <h2>Select Shipping Address</h2>
+            <hr>
+            {% if addresses %}
+                {% for i in addresses %}
+                <div class="row">
+                    <div class="col-md-10 offset-1">
+                        <span>{{i.address}}</span><br>
+                        <span>Mob_No: {{i.phone_number}}</span><br>
+                        <span>City: {{i.city}}</span><br>
+                        <span>State: {{i.state}}</span><br>
+                        <span>Zip: {{i.zip}}</span><br><br>
+                        <span>
+                            <!-- Button trigger modal -->
+                            <a href="{% url 'change_shipping_adrress' %}" type="button" class="btn btn-primary">
+                            Change Shipping Address
+                            </a>
+                        </span>
+                    
+                    </div>
+                </div>
+                <hr>
+                {% endfor %}
+                {% if cart %}
+                    {% comment %} <a href="{% url 'order' %}" class='btn btn-success'>Place Order</a> {% endcomment %}
+                     <div id="paypal-button-container"></div>
+                {% endif %}
+            {% else %}
+                <div class="alert alert-info">
+                No Address Added yet!
+                </div>
+                <a href="{% url 'add_address' %}" class='btn btn-secondary'>Add Address</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock body %}
+
+{% block payment-gateway %}
+    <!-- Include the PayPal JavaScript SDK -->
+    <script src="https://www.paypal.com/sdk/js?client-id=AUKJthoAK-nWq_R0end_r_8YPeJ9AGyFqEOOx2cgGdFUVWZZ6iqinNvoDR-fhMjsQkKmO8KDkJKscHDm&currency=USD"></script>
+
+    <script>
+        // Render the PayPal button into #paypal-button-container
+        paypal.Buttons({
+
+            // Set up the transaction
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '{{tot_price|add:70}}'
+                        }
+                    }]
+                });
+            },
+
+            // Finalize the transaction
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(orderData) {
+                    // Successful capture! For demo purposes:
+                    console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                    var transaction = orderData.purchase_units[0].payments.captures[0];
+                    // alert('Transaction '+ transaction.status + ': ' + transaction.id + '\n\nSee console for all available details');
+                    window.location.replace("../order/");
+
+                    // Replace the above to show a success message within this page, e.g.
+                    // const element = document.getElementById('paypal-button-container');
+                    // element.innerHTML = '';
+                    // element.innerHTML = '<h3>Thank you for your payment!</h3>';
+                    // Or go to another URL:  actions.redirect('thank_you.html');
+                });
+            }
+
+
+        }).render('#paypal-button-container');
+    </script>
+
+{% endblock payment-gateway %}
+

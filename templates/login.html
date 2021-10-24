@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock title %}
+{% load static %}
+{% block body %}
+<div class="row mx-0" style='min-height:66vh; margin-top:15vh;'>
+  <div class="col-md-3"></div>
+  <div class="col-md-6 my-3">
+    <h2 class='text-center'>Login</h2>
+    <form method="post" action='/login'>
+      {% csrf_token %}
+      <div >
+        <label for="username" class="form-label">Username</label>
+        <input type="text" class="form-control" id="username" name='username' placeholder='Enter your username'
+          required>
+      </div>
+      <div class="mb-3">
+        <label for="pass1" class="form-label">Password</label>
+        <input type="password" name='pass1' class="form-control" id="pass1" placeholder='Enter your password' required>
+      </div>
+      <button type="submit" class="btn btn-primary">Login</button>
+      <a href="{% url 'signup' %}" class="btn btn-primary">SignUp</a>
+      <a href="{% url 'password_reset' %}" class="btn btn-primary">Forget Password</a>
+    </form>
+  </div>
+
+  <div class="col-md-3"></div>
+</div>
+
+{% endblock body %}

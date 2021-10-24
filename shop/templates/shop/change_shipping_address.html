@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Change Shiping Address{% endblock title %}
+{% load static %}
+
+
+{% block body %} 
+
+    <div class="row mx-0">
+        <div class="col-sm-8 col-md-8 col-xs-8 my-2 offset-2">
+            
+            <form action="" method="post">
+                {% csrf_token %}
+                {% for i in adrresses %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="address" id="adrress_{{i.id}}" value={{i.id}} checked>
+                        <label class="form-check-label" for="address">
+        
+                            <span>{{i.address}}</span><br>
+                            <span>Mob_No: {{i.phone_number}}</span><br>
+                            <span>City: {{i.city}}</span><br>
+                            <span>State: {{i.state}}</span><br>
+                            <span>Zip: {{i.zip}}</span><br><br>
+                
+                        </label>
+                    </div>
+                <hr>
+                {% endfor %}
+                <input type="submit" value='Change Address' class='btn btn-primary'>
+            </form>
+            <br>
+            <a href="{% url 'checkout' %}" class='btn btn-secondary '> Back To Checkout </a>
+        </div>
+    </div>
+    
+{% endblock body %}
+
