@@ -96,7 +96,7 @@ def userlogin(request):
 
         else:
             messages.error(request, "Invalid Crendentials, Please try again")
-            return redirect('home')
+            return redirect('login')
     else:
         return render(request,'login.html')
 
