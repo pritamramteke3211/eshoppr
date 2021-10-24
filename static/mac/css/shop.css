@@ -134,6 +134,6 @@ table, th, td {
 
  /* Navbar */
  .navbar-brand{
-      font-weight: 800;
-      font-size: 22px;
+      font-weight: 800!important;
+      font-size: 22px!important;
  }
