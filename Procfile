@@ -1,1 +1,1 @@
-web: waitress-serve --port=$PORT mac.wsgi:application
+web: waitress-serve --port=8000 mac.wsgi:application
